@@ -12,6 +12,7 @@ container {
     border: 5px;
     border-color: black;
 }
+
 img {
     display: flex;
     height: 200px;
