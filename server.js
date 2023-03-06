@@ -37,3 +37,19 @@ fs.writeFile('./Palindromes.json', JSON.stringify(pals), function (err) {
   }
   });
 });
+
+const data = require('./products.json');
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/search', (req, res) => {
+  const query = req.query.q.toLowerCase().trim();
+  const filteredData = data.filter(item => {
+    const name = item.name.toLowerCase();
+    const type = item.type.toLowerCase();
+    return name.includes(query) || type.includes(query);
+  });
+  res.json(filteredData);
+});

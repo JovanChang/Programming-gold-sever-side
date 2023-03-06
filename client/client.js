@@ -57,3 +57,33 @@ function showCart() {
     cartElement.appendChild(cartList);
   }
 }
+
+const form = document.getElementById('search-form');
+const input = document.getElementById('search-input');
+const results = document.getElementById('results');
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const query = input.value.trim();
+  fetch(`/search?q=${query}`)
+    .then(response => response.json())
+    .then(data => updateResults(data));
+});
+
+function updateResults(data) {
+  let html = '';
+  data.forEach(item => {
+    html += `
+      <div class="col-md-4">
+        <div class="card">
+          <img src="${item.image}" class="card-img-top" alt="${item.name}">
+          <div class="card-body">
+            <h5 class="card-title">${item.name},$${item.price}</h5>
+            <p class="card-text">${item.type}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  results.innerHTML = html;
+}
