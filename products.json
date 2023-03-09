@@ -2,23 +2,30 @@
     {
       "id": 1,
       "name": "red apple",
-      "type": "fruit",
+      "type": "fruits",
       "price": 1.00,
-      "image": "images/cry.jpg"
+      "image": "images/Red_Apple.jpg"
     },
     {
       "id": 2,
       "name": "green apple",
-      "type": "fruit",
+      "type": "fruits",
       "price": 2.00,
-      "image": "product2.jpg"
+      "image": "images/Green_Apple.jpg"
     },
     {
       "id": 3,
       "name": "banana",
-      "type": "fruit",
+      "type": "fruits",
       "price": 3.00,
-      "image": "product3.jpg"
+      "image": "images/Banana.jpg"
+    },
+    {
+      "id": 4,
+      "name": "strawberry",
+      "type": "fruits",
+      "price": 2.00,
+      "image":"images/Strawberry.jpg"
     }
   ]
   

@@ -10,35 +10,40 @@ app.listen(3000, () => {
   console.log('Server started on port 3000');
 });
 
+
+//adding new product into the webpage
 const fs = require('fs');
-let pals = require('./Palindromes.json');
+const data = require('./products.json');
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 
+
+//using the post method to get request from the client to modify the json file
 app.post('/new', function (req, resp) {
   console.log('Got request');
   console.log(req.body);
-  const palin = req.body.palin;
-  const aboutp = req.body.aboutp;
+  const prod_name = req.body.prod_name;
+  const type = req.body.type;
+  const price = req.body.price;
+  const img_dir = req.body.img_dir;
 
-  const pdrome = { 'name': palin,
-                    'about': aboutp
+  const new_id = Math.max(...data.map(item => item.id)) + 1;
+
+  const json = { "id": new_id,
+      "name": prod_name,
+      "type": type,
+      "price": price,
+      "image": img_dir
                   };
 
-  pals.push(pdrome);
+  data.push(json);
+  console.log("request done")
+  resp.send("Successfully added the new product!")
+ });
 
-fs.writeFile('./Palindromes.json', JSON.stringify(pals), function (err) {
-  if (err) {
-    console.log('Error writing file:', err);
-    resp.status(500).send('Error writing file');
-  } else {
-    console.log('File written successfully');
-    resp.send('Thanks for the palindrome');
-  }
-  });
-});
 
-const data = require('./products.json');
+//search/filter list function
+const e = require('express');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

@@ -1,66 +1,7 @@
-let cart = [];
-
-// Fetch products from JSON file
-fetch('products.json')
-  .then(response => response.json())
-  .then(products => {
-    // Display products
-    let productsElement = document.getElementById('products');
-    products.forEach(function(product) {
-      let productElement = document.createElement('div');
-      productElement.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-        <h2>${product.name}</h2>
-        <p>${product.description}</p>
-        <p>Price: $${product.price}</p>
-        <button onclick="addToCart(${product.id})">Add to Cart</button>
-      `;
-      productsElement.appendChild(productElement);
-    });
-  })
-  .catch(error => console.error(error));
-
-function addToCart(id) {
-  // Find product by ID and add it to cart
-  let product = products.find(product => product.id === id);
-  cart.push(product);
-  showCart();
-}
-
-function removeFromCart(id) {
-  // Find product by ID and remove it from cart
-  let index = cart.findIndex(product => product.id === id);
-  if (index !== -1) {
-    cart.splice(index, 1);
-    showCart();
-  }
-}
-
-function showCart() {
-  let cartElement = document.getElementById('cart');
-  cartElement.innerHTML = '';
-
-  if (cart.length === 0) {
-    cartElement.innerHTML = '<p>Your cart is empty.</p>';
-  } else {
-    let cartList = document.createElement('ul');
-    cart.forEach(function(product) {
-      let cartItem = document.createElement('li');
-      cartItem.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-        <h2>${product.name}</h2>
-        <p>Price: $${product.price}</p>
-        <button onclick="removeFromCart(${product.id})">Remove</button>
-      `;
-      cartList.appendChild(cartItem);
-    });
-    cartElement.appendChild(cartList);
-  }
-}
-
 const form = document.getElementById('search-form');
 const input = document.getElementById('search-input');
 const results = document.getElementById('results');
+
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -73,17 +14,64 @@ form.addEventListener('submit', event => {
 function updateResults(data) {
   let html = '';
   data.forEach(item => {
+    const itemQuantity = localStorage.getItem(`item-${item.id}`);
     html += `
       <div class="col-md-4">
-        <div class="card">
-          <img src="${item.image}" class="card-img-top" alt="${item.name}">
+        <div id="id-product-${item.id}" class="card">
+        <!--image style are added here directly due to async issues--!>
+          <img src="${item.image}" class="card-img-top" style="width:200px; height:auto; display:flex; overflow:hidden; object-fit:cover; margin-left: auto;margin-right: auto;" alt="Something went wrong here :(">
           <div class="card-body">
-            <h5 class="card-title">${item.name},$${item.price}</h5>
+            <h5 class="card-title">${item.name} $${item.price}</h5>
             <p class="card-text">${item.type}</p>
+            <div class="buttons">
+              <i onclick="decrement(${item.id})" class="bi bi-bag-dash"></i>
+              <div id="${item.id}" class="quantity">${itemQuantity ? itemQuantity:0}</div>
+              <i onclick="increment(${item.id})" class="bi bi-bag-plus"></i>
+            </div>
           </div>
         </div>
       </div>
     `;
   });
   results.innerHTML = html;
+}
+
+function updateCartCount() {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const cartAmount = document.querySelector('.cartAmount');
+  cartAmount.textContent = totalQuantity.toString();
+}
+
+function increment(id) {
+  let quantity = parseInt(document.getElementById(id).textContent);
+  quantity += 1;
+  document.getElementById(id).textContent = quantity;
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const index = cartItems.findIndex(item => item.id === id);
+  if (index === -1) {
+    cartItems.push({ id, quantity });
+  } else {
+    cartItems[index].quantity += 1;
+  }
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  updateCartCount();
+}
+
+function decrement(id) {
+  let quantity = parseInt(document.getElementById(id).textContent);
+  if (quantity > 0) {
+    quantity -= 1;
+    document.getElementById(id).textContent = quantity;
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const index = cartItems.findIndex(item => item.id === id);
+    if (index !== -1) {
+      cartItems[index].quantity -= 1;
+      if (cartItems[index].quantity === 0) {
+        cartItems.splice(index, 1);
+      }
+    }
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateCartCount();
+  }
 }
