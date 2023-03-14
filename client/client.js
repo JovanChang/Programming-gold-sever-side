@@ -1,7 +1,15 @@
+window.addEventListener('beforeunload', () => {
+  // eslint-disable-next-line no-undef
+  localStorage.clear();
+});
+
+window.onload = function () {
+  document.getElementById('submit').click();
+};
+
 const form = document.getElementById('search-form');
 const input = document.getElementById('search-input');
 const results = document.getElementById('results');
-
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -11,9 +19,11 @@ form.addEventListener('submit', event => {
     .then(data => updateResults(data));
 });
 
-function updateResults(data) {
+function updateResults (data) {
   let html = '';
-  data.forEach(item => {
+  // eslint-disable-next-line no-lone-blocks
+  { data.forEach(item => {
+    // eslint-disable-next-line no-undef
     const itemQuantity = localStorage.getItem(`item-${item.id}`);
     html += `
       <div class="col-md-4">
@@ -25,7 +35,7 @@ function updateResults(data) {
             <p class="card-text">${item.type}</p>
             <div class="buttons">
               <i onclick="decrement(${item.id})" class="bi bi-bag-dash"></i>
-              <div id="${item.id}" class="quantity">${itemQuantity ? itemQuantity:0}</div>
+              <div id="${item.id}" class="quantity">${itemQuantity || 0}</div>
               <i onclick="increment(${item.id})" class="bi bi-bag-plus"></i>
             </div>
           </div>
@@ -34,19 +44,24 @@ function updateResults(data) {
     `;
   });
   results.innerHTML = html;
+if (html === '') {
+  results.innerHTML = '<h1>The product you searched for is still unavailable, try something else!<h1>';
+} }
 }
 
-function updateCartCount() {
+function updateCartCount () {
+  // eslint-disable-next-line no-undef
   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
   const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartAmount = document.querySelector('.cartAmount');
   cartAmount.textContent = totalQuantity.toString();
 }
 
-function increment(id) {
+function increment (id) {
   let quantity = parseInt(document.getElementById(id).textContent);
   quantity += 1;
   document.getElementById(id).textContent = quantity;
+  // eslint-disable-next-line no-undef
   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
   const index = cartItems.findIndex(item => item.id === id);
   if (index === -1) {
@@ -54,15 +69,17 @@ function increment(id) {
   } else {
     cartItems[index].quantity += 1;
   }
+  // eslint-disable-next-line no-undef
   localStorage.setItem('cartItems', JSON.stringify(cartItems));
   updateCartCount();
 }
 
-function decrement(id) {
+function decrement (id) {
   let quantity = parseInt(document.getElementById(id).textContent);
   if (quantity > 0) {
     quantity -= 1;
     document.getElementById(id).textContent = quantity;
+    // eslint-disable-next-line no-undef
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const index = cartItems.findIndex(item => item.id === id);
     if (index !== -1) {
@@ -71,7 +88,24 @@ function decrement(id) {
         cartItems.splice(index, 1);
       }
     }
+    // eslint-disable-next-line no-undef
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     updateCartCount();
   }
 }
+
+const checkout = document.getElementById('checkout');
+
+checkout.addEventListener('click', () => {
+// eslint-disable-next-line no-undef
+console.log(localStorage);
+fetch('./orders', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  // eslint-disable-next-line no-undef
+  body: JSON.stringify(localStorage)
+})
+.catch(error => console.error(error));
+});

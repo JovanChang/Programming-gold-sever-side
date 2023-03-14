@@ -28,6 +28,7 @@
             <div class="cartAmount">0</div>
           </div>
         </a>
+        <button id="checkout">checkout</button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -36,7 +37,7 @@
           </ul>
           <form class="d-flex" role="search" action="/search" method="GET" id="search-form">
             <input class="form-control me-2" type="search" placeholder="Search by name or type" aria-label="Search" name="q" id="search-input">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit" id="submit">Search</button>
           </form>
         </div>
       </div>
@@ -50,6 +51,7 @@
           <div class="row" id="results">
             <h1>Welcome to My Supermarket</p>
               <p>Use the search bar to find your desired products!</p>
+              <p>Click on the search button on the navigation bar to see what we got!</p>
           </div>
         </div>
       </div>
@@ -57,7 +59,7 @@
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">This is the admin  page
         <form action="/new" method="POST">
           <p> Products 
-            <input type="text" name="prod_name" id="prod_name">
+            <input type="text" name="prodName" id="prodName">
           </p>
           <p> Type of Products
             <input type="text" name="type" id="type">
@@ -66,7 +68,7 @@
             <input type="text" name="price" id="price">
           </p>
           <p>Image directory path (Please add the image directly in the images directory!) 
-            <input type="text" name="img_dir" id="img_dir">
+            <input type="text" name="imgDir" id="imgDir">
           </p>
           <p><input class="btn btn-primary" type="submit" value="Submit"></p>
         </form>
