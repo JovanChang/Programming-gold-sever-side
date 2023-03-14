@@ -34,9 +34,9 @@ function updateResults (data) {
             <h5 class="card-title">${item.name} $${item.price}</h5>
             <p class="card-text">${item.type}</p>
             <div class="buttons">
-              <i onclick="decrement(${item.id})" class="bi bi-bag-dash"></i>
+              <i onclick="decrement(${item.id}, '${item.name}', ${item.price}, '${item.image}')" class="bi bi-bag-dash"></i>
               <div id="${item.id}" class="quantity">${itemQuantity || 0}</div>
-              <i onclick="increment(${item.id})" class="bi bi-bag-plus"></i>
+              <i onclick="increment(${item.id}, '${item.name}', '${item.price}', '${item.image}')" class="bi bi-bag-plus"></i>
             </div>
           </div>
         </div>
@@ -57,7 +57,9 @@ function updateCartCount () {
   cartAmount.textContent = totalQuantity.toString();
 }
 
-function increment (id) {
+// eslint-disable-next-line no-unused-vars
+function increment (id, name, price, image) {
+  console.log(id, name, price, image);
   let quantity = parseInt(document.getElementById(id).textContent);
   quantity += 1;
   document.getElementById(id).textContent = quantity;
@@ -65,7 +67,7 @@ function increment (id) {
   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
   const index = cartItems.findIndex(item => item.id === id);
   if (index === -1) {
-    cartItems.push({ id, quantity });
+    cartItems.push({ id, name, price, image, quantity });
   } else {
     cartItems[index].quantity += 1;
   }
@@ -74,7 +76,8 @@ function increment (id) {
   updateCartCount();
 }
 
-function decrement (id) {
+// eslint-disable-next-line no-unused-vars
+function decrement (id, name, price, image) {
   let quantity = parseInt(document.getElementById(id).textContent);
   if (quantity > 0) {
     quantity -= 1;
@@ -99,7 +102,7 @@ const checkout = document.getElementById('checkout');
 checkout.addEventListener('click', () => {
 // eslint-disable-next-line no-undef
 console.log(localStorage);
-fetch('./orders', {
+fetch('/orders', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -109,3 +112,45 @@ fetch('./orders', {
 })
 .catch(error => console.error(error));
 });
+
+// JavaScript code to fetch and display the data
+const cartItemsGrid = document.getElementById('cart-items-grid');
+
+// Fetch the data from the server using fetch()
+checkout.addEventListener('click', () => {
+  console.log('success');
+  fetch('/getorders')
+  .then(response => response.json())
+  .then(data => updateCartPage(data));
+});
+
+function updateCartPage (data) {
+  console.log('cart data is here', localStorage.getItem('cartItems'));
+  // console.log('this is the fetched data', typeof (data));
+  // console.log(Array.from(data));
+  const html = '<p>We have received your products request! Thanks for shopping!</p>';
+  // // eslint-disable-next-line no-lone-blocks
+  // { Array.from(data.children).forEach(item => {
+  //   console.log(item);
+  //   // eslint-disable-next-line no-undef
+  //   const itemQuantity = localStorage.getItem(`item-${item.id}`);
+  //   html += `
+  //     <div class="col-md-4">
+  //       <div id="id-product-${item.cartItems}" class="card">
+  //       <!--image style are added here directly due to async issues--!>
+  //         <img src="${item.image}" class="card-img-top" style="width:200px; height:auto; display:flex; overflow:hidden; object-fit:cover; margin-left: auto;margin-right: auto;" alt="Something went wrong here :(">
+  //         <div class="card-body">
+  //           <h5 class="card-title">${item.name} $${item.price}</h5>
+  //           <p class="card-text">${item.type}</p>
+  //           <div class="buttons">
+  //             <i onclick="decrement(${item.id}, '${item.name}', ${item.price}, '${item.image}')" class="bi bi-bag-dash"></i>
+  //             <div id="${item.id}" class="quantity">${itemQuantity || 0}</div>
+  //             <i onclick="increment(${item.id}, '${item.name}', '${item.price}', '${item.image}')" class="bi bi-bag-plus"></i>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `;
+  // });
+  cartItemsGrid.innerHTML = html;
+};

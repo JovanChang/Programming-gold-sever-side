@@ -10,11 +10,7 @@ const path = require('path');
 app.use(express.static('client'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// // Start the server
-// app.listen(3000, () => {
-//   console.log('Server started on port 3000');
-// });
+app.use(express.json());
 
 // adding new product into the webpage
 const data = require('./products.json');
@@ -42,7 +38,9 @@ app.post('/new', function (req, resp) {
   console.log('request done');
   resp.send(json);
 });
+
 const orders = [];
+
 app.post('/orders', (req, resp) => {
     const newOrders = req.body;
     console.log(newOrders);
@@ -51,9 +49,9 @@ app.post('/orders', (req, resp) => {
 });
 
 app.get('/getorders', (req, resp) => {
+    console.log(orders);
     resp.json(orders);
 });
-// search/filter list function
 
 const fullpath = path.join(__dirname, 'index.html');
 

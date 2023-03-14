@@ -22,18 +22,18 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="cart.html">
+        <a>
           <div class="cart">
             <i class="bi bi-cart"></i>
             <div class="cartAmount">0</div>
           </div>
         </a>
-        <button id="checkout">checkout</button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">User</button>
               <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Admin</button>
+              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Shopping cart</button>
           </ul>
           <form class="d-flex" role="search" action="/search" method="GET" id="search-form">
             <input class="form-control me-2" type="search" placeholder="Search by name or type" aria-label="Search" name="q" id="search-input">
@@ -72,6 +72,17 @@
           </p>
           <p><input class="btn btn-primary" type="submit" value="Submit"></p>
         </form>
+      </div>
+      <!--This is the shopping cart-->
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+        <p>this is the checkout page</p>
+        <button class="btn btn-success" id="checkout">checkout</button>
+        <div class="container">
+          <div class="row">
+            <div class="col" id="cart-items-grid"></div>
+
+          </div>
+        </div>
       </div>
     
 
