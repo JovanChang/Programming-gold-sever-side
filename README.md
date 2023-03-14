@@ -17,7 +17,7 @@ npm start
 Then, proceed to visit localhost:3000 in a browser to view the website. 
 The website is tested and developed using Opera GX and VS code and no errors are found by using these tools.
 
-##Frameworks used
+## Frameworks used
 -Bootstrap (https://getbootstrap.com)
 -Bootstrap Icon (https://icons.getbootstrap.com)
 -Express (https://expressjs.com)
