@@ -17,6 +17,10 @@ npm start
 Then, proceed to visit localhost:3000 in a browser to view the website. 
 The website is tested and developed using Opera GX and VS code and no errors are found by using these tools.
 
+##API documentation
+This is the link to my postman API documentation, you can see all my post/get method and how should they behaviour
+https://documenter.getpostman.com/view/26373683/2s93JwP39m
+
 ## Frameworks used
 -Bootstrap (https://getbootstrap.com)
 -Bootstrap Icon (https://icons.getbootstrap.com)
