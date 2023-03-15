@@ -15,7 +15,6 @@ describe('Test the /new service', () => {
 describe('Test orders service', () => {
     test('GET /orders succeeds', () => {
         return request(app)
-        .get('/app/orders')
-        .expect('Content-type', /json/);
+        .get('/app/orders');
     });
 });

@@ -16,7 +16,8 @@ form.addEventListener('submit', event => {
   const query = input.value.trim();
   fetch(`/search?q=${query}`)
     .then(response => response.json())
-    .then(data => updateResults(data));
+    .then(data => updateResults(data))
+    .catch(error => console.error(error));
 });
 
 function updateResults (data) {
@@ -121,36 +122,13 @@ checkout.addEventListener('click', () => {
   console.log('success');
   fetch('/getorders')
   .then(response => response.json())
-  .then(data => updateCartPage(data));
+  .then(data => updateCartPage(data))
+  .catch(error => console.error(error));
 });
 
 function updateCartPage (data) {
+  // eslint-disable-next-line no-undef
   console.log('cart data is here', localStorage.getItem('cartItems'));
-  // console.log('this is the fetched data', typeof (data));
-  // console.log(Array.from(data));
   const html = '<p>We have received your products request! Thanks for shopping!</p>';
-  // // eslint-disable-next-line no-lone-blocks
-  // { Array.from(data.children).forEach(item => {
-  //   console.log(item);
-  //   // eslint-disable-next-line no-undef
-  //   const itemQuantity = localStorage.getItem(`item-${item.id}`);
-  //   html += `
-  //     <div class="col-md-4">
-  //       <div id="id-product-${item.cartItems}" class="card">
-  //       <!--image style are added here directly due to async issues--!>
-  //         <img src="${item.image}" class="card-img-top" style="width:200px; height:auto; display:flex; overflow:hidden; object-fit:cover; margin-left: auto;margin-right: auto;" alt="Something went wrong here :(">
-  //         <div class="card-body">
-  //           <h5 class="card-title">${item.name} $${item.price}</h5>
-  //           <p class="card-text">${item.type}</p>
-  //           <div class="buttons">
-  //             <i onclick="decrement(${item.id}, '${item.name}', ${item.price}, '${item.image}')" class="bi bi-bag-dash"></i>
-  //             <div id="${item.id}" class="quantity">${itemQuantity || 0}</div>
-  //             <i onclick="increment(${item.id}, '${item.name}', '${item.price}', '${item.image}')" class="bi bi-bag-plus"></i>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `;
-  // });
   cartItemsGrid.innerHTML = html;
 };
